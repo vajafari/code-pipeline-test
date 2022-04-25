@@ -12,6 +12,14 @@ phases:
       - echo build is `date`
 artifacts:
   files:
-    - cloud-formtation.json
-    - build/*
-  name: build-artifacts
+    - "**/*"
+  name: build-output
+  discard-paths: no
+  base-directory: build
+  s3-prefix: code-build-outputs
+  secondary-artifacts:
+    cloudformationfile:
+      files:
+        - cloud-formtation.json
+      name: cloud-formtation
+      discard-paths: no
