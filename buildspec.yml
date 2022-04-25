@@ -18,7 +18,7 @@ artifacts:
     - "build/**/*"
   name: build-output
   discard-paths: no
-  s3-prefix: code-build-outputs
+  s3-prefix: $CODEBUILD_WEBHOOK_TRIGGER/build
   secondary-artifacts:
     cloudformationfile:
       files:
