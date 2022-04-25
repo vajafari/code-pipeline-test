@@ -5,6 +5,7 @@ phases:
     commands:
       - echo $CODEBUILD_SOURCE_VERSION
       - echo $CODEBUILD_WEBHOOK_BASE_REF
+      - echo $CODEBUILD_WEBHOOK_TRIGGER
       - yarn
   build:
     commands:
