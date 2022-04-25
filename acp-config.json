@@ -1,0 +1,106 @@
+{
+  "acpConfig": {
+    "projectName": "code-pipeline-test",
+    "resourceFriendlyProjectName": "codepipelinetest",
+    "cliProfile": "acp",
+    "defaultStage": "dev",
+    "region": "us-east-2",
+    "projectRandomNumber": 1650871920579,
+    "framework": "CF",
+    "status": "Active"
+  },
+  "authConfig": {
+    "userPoolProperties": {
+      "AccountRecoverySetting": {
+        "RecoveryMechanisms": [
+          { "Name": "verified_email", "Priority": 1 },
+          { "Name": "verified_phone_number", "Priority": 2 }
+        ]
+      },
+      "AutoVerifiedAttributes": ["email", "phone_number"],
+      "Schema": [
+        {
+          "Name": "email",
+          "AttributeDataType": "String",
+          "Mutable": false,
+          "Required": true,
+          "Label": "Email",
+          "Placeholder": "Enter your email"
+        },
+        {
+          "Name": "phone_number",
+          "AttributeDataType": "String",
+          "Mutable": false,
+          "Required": false,
+          "Label": "Phone Number",
+          "Placeholder": "Enter your phone number"
+        }
+      ],
+      "UsernameAttributes": ["email"],
+      "UsernameConfiguration": { "CaseSensitive": false },
+      "EmailVerificationMessage": "Your verification code is {####}",
+      "EmailVerificationSubject": "Your verification code",
+      "SmsAuthenticationMessage": "Your authentication code is {####}",
+      "SmsVerificationMessage": "Your verification code is {####}",
+      "MfaConfiguration": "OPTIONAL",
+      "Policies": {
+        "PasswordPolicy": {
+          "MinimumLength": 8,
+          "RequireLowercase": false,
+          "RequireNumbers": false,
+          "RequireSymbols": false,
+          "RequireUppercase": false,
+          "TemporaryPasswordValidityDays": 365
+        }
+      }
+    },
+    "userPoolClientProperties": {
+      "GenerateSecret": false,
+      "ReadAttributes": [
+        "email",
+        "email_verified",
+        "phone_number",
+        "phone_number_verified"
+      ],
+      "WriteAttributes": ["email", "phone_number"],
+      "RefreshTokenValidity": 365
+    },
+    "customPathSecuritySetting": [],
+    "userGroups": [{ "GroupName": "Users", "Precedence": 1 }],
+    "cognitoAdminApiSecuritySetting": {
+      "listUsers": { "authenticated": true },
+      "adminCreateUser": { "authenticated": true },
+      "adminDeleteUser": { "authenticated": true },
+      "adminGetUser": { "authenticated": true },
+      "adminUpdateUserAttributes": { "authenticated": true },
+      "adminDisableUser": { "authenticated": true },
+      "adminEnableUser": { "authenticated": true },
+      "adminSetUserPassword": { "authenticated": true },
+      "adminRemoveUserFromGroup": { "authenticated": true },
+      "adminListGroupsForUser": { "authenticated": true },
+      "adminAddUserToGroup": { "authenticated": true }
+    },
+    "notificationApiSecuritySetting": {
+      "delete": { "authenticated": true },
+      "post": { "authenticated": true },
+      "put": { "authenticated": true },
+      "get": { "authenticated": true },
+      "scan": { "authenticated": true }
+    },
+    "userPreferencesApiSecuritySetting": {
+      "delete": { "authenticated": true },
+      "post": { "authenticated": true },
+      "put": { "authenticated": true },
+      "get": { "authenticated": true }
+    },
+    "notificationMessagesApiSecuritySetting": {
+      "get": { "authenticated": true }
+    }
+  },
+  "notificationConfig": {
+    "isFifo": true,
+    "activeChannels": [],
+    "categoryConfig": [{ "title": "General", "notificationType": "OPT-OUT" }]
+  },
+  "webhookConfig": []
+}

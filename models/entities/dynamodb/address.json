@@ -1,0 +1,413 @@
+{
+  "entityName": "address",
+  "entityType": "DynamoDB",
+  "displayName": "Address",
+  "icon": "ContactMail",
+  "displayOrder": 1,
+  "fields": [
+    {
+      "name": "userSub",
+      "displayName": "Sub",
+      "type": "string",
+      "required": true,
+      "displayOptions": {
+        "create": {
+          "displayType": "noDisplay",
+          "displayOrder": 1
+        },
+        "edit": {
+          "displayType": "noDisplay",
+          "displayOrder": 1
+        },
+        "list": {
+          "displayType": "noDisplay",
+          "displayOrder": 1
+        }
+      }
+    },
+    {
+      "name": "updatedAt",
+      "displayName": "Updated At",
+      "type": "integer",
+      "required": true,
+      "displayOptions": {
+        "create": {
+          "displayType": "noDisplay",
+          "displayOrder": 1
+        },
+        "edit": {
+          "displayType": "noDisplay",
+          "displayOrder": 1
+        },
+        "list": {
+          "displayType": "noDisplay",
+          "displayOrder": 1
+        }
+      }
+    },
+    {
+      "name": "country",
+      "displayName": "Country",
+      "type": "string",
+      "required": true,
+      "showInCreateForm": 1,
+      "showInEditForm": 1,
+      "showInList": 1,
+      "displayOptions": {
+        "create": {
+          "displayType": "displayOptional",
+          "displayOrder": 1
+        },
+        "edit": {
+          "displayType": "displayOptional",
+          "displayOrder": 1
+        },
+        "list": {
+          "displayType": "displayOptional",
+          "displayOrder": 1
+        }
+      }
+    },
+    {
+      "name": "state",
+      "displayName": "state",
+      "type": "string",
+      "required": false,
+      "showInCreateForm": 2,
+      "showInEditForm": 2,
+      "showInList": 2,
+      "displayOptions": {
+        "create": {
+          "displayType": "displayOptional",
+          "displayOrder": 2
+        },
+        "edit": {
+          "displayType": "displayOptional",
+          "displayOrder": 2
+        },
+        "list": {
+          "displayType": "displayOptional",
+          "displayOrder": 2
+        }
+      }
+    },
+    {
+      "name": "city",
+      "displayName": "City",
+      "type": "string",
+      "required": false,
+      "showInCreateForm": 3,
+      "showInEditForm": 3,
+      "showInList": 3,
+      "displayOptions": {
+        "create": {
+          "displayType": "displayOptional",
+          "displayOrder": 3
+        },
+        "edit": {
+          "displayType": "displayOptional",
+          "displayOrder": 3
+        },
+        "list": {
+          "displayType": "displayOptional",
+          "displayOrder": 3
+        }
+      }
+
+    },
+    {
+      "name": "addressLine1",
+      "displayName": "Address Line 1",
+      "type": "string",
+      "required": false,
+      "showInCreateForm": 4,
+      "showInEditForm": 4,
+      "showInList": 4,
+      "displayOptions": {
+        "create": {
+          "displayType": "displayOptional",
+          "displayOrder": 4
+        },
+        "edit": {
+          "displayType": "displayOptional",
+          "displayOrder": 4
+        },
+        "list": {
+          "displayType": "displayOptional",
+          "displayOrder": 4
+        }
+      }
+    },
+    {
+      "name": "addressLine2",
+      "displayName": "Address Line 2",
+      "type": "string",
+      "required": false,
+      "showInCreateForm": 5,
+      "showInEditForm": 5,
+      "showInList": 5,
+      "displayOptions": {
+        "create": {
+          "displayType": "displayOptional",
+          "displayOrder": 6
+        },
+        "edit": {
+          "displayType": "displayOptional",
+          "displayOrder": 6
+        },
+        "list": {
+          "displayType": "displayOptional",
+          "displayOrder": 6
+        }
+      }
+    },
+    {
+      "name": "zipCode",
+      "displayName": "Zip Code",
+      "type": "string",
+      "required": false,
+      "showInCreateForm": 6,
+      "showInEditForm": 6,
+      "showInList": 6,
+      "displayOptions": {
+        "create": {
+          "displayType": "displayOptional",
+          "displayOrder": 7
+        },
+        "edit": {
+          "displayType": "displayOptional",
+          "displayOrder": 7
+        },
+        "list": {
+          "displayType": "displayOptional",
+          "displayOrder": 7
+        }
+      }
+    },
+    {
+      "name": "testbool",
+      "displayName": "Zip Code",
+      "type": "boolean",
+      "required": false,
+      "showInCreateForm": 6,
+      "showInEditForm": 6,
+      "showInList": 6,
+      "displayOptions": {
+        "create": {
+          "displayType": "displayOptional",
+          "displayOrder": 7
+        },
+        "edit": {
+          "displayType": "displayOptional",
+          "displayOrder": 7
+        },
+        "list": {
+          "displayType": "displayOptional",
+          "displayOrder": 7
+        }
+      }
+    }
+  ],
+  "keys": [
+    {
+      "name": "userSub",
+      "type": "S",
+      "keyType": "HASH"
+    },
+    {
+      "name": "updatedAt",
+      "type": "N",
+      "keyType": "RANGE",
+      "queryStringParam": true
+    }
+  ],
+  "needScan": false,
+  "methodInfos": [
+    {
+      "httpMethod": "GET",
+      "needSeparatedLambda": true,
+      "isCorsEnabled": true,
+      "authenticationInfo": {
+        "authenticated": true
+      }
+      
+    },
+    {
+      "httpMethod": "POST",
+      "needSeparatedLambda": true,
+      "isCorsEnabled": true,
+      "authenticationInfo": {
+        "authenticated": true
+      },
+      "jsonSchema": {
+        "$schema": "http://json-schema.org/draft-04/schema#",
+        "type": "object",
+        "additionalProperties": false,
+        "definitions": {
+          "formGeneratorFields": {
+            "enum": [
+              "country",
+              "state",
+              "city",
+              "addressLine1",
+              "addressLine2",
+              "zipCode",
+              "testbool"
+            ]
+          }
+        },
+        "properties": {
+          "userSub": {
+            "type": "string"
+          },
+          "updatedAt": {
+            "type": "integer"
+          },
+          "country": {
+            "type": "string",
+            "description": "Country"
+          },
+          "state": {
+            "type": "string",
+            "description": "State"
+          },
+          "city": {
+            "type": "string",
+            "description": "City"
+          },
+          "addressLine1": {
+            "type": "string",
+            "description": "Address Line 1"
+          },
+          "addressLine2": {
+            "type": "string",
+            "description": "Address Line 2"
+          },
+          "zipCode": {
+            "type": "string",
+            "description": "Zip Code"
+          },
+          "testbool":{
+            "type": "boolean",
+            "description": "Test bool"
+          }
+        },
+        "required": [
+          "country",
+          "state",
+          "city",
+          "addressLine1",
+          "zipCode"
+        ]
+      }
+    },
+    {
+      "httpMethod": "PUT",
+      "needSeparatedLambda": true,
+      "isCorsEnabled": true,
+      "authenticationInfo": {
+        "authenticated": true
+      },
+      "jsonSchema": {
+        "$schema": "http://json-schema.org/draft-04/schema#",
+        "type": "object",
+        "additionalProperties": false,
+        "definitions": {
+          "formGeneratorFields": {
+            "enum": [
+              "country",
+              "state",
+              "city",
+              "addressLine1",
+              "addressLine2",
+              "zipCode"
+            ]
+          }
+        },
+        "properties": {
+          "userSub": {
+            "type": "string"
+          },
+          "updatedAt": {
+            "type": "integer"
+          },
+          "country": {
+            "type": "string",
+            "description": "Country"
+          },
+          "state": {
+            "type": "string",
+            "description": "State"
+          },
+          "city": {
+            "type": "string",
+            "description": "City"
+          },
+          "addressLine1": {
+            "type": "string",
+            "description": "Address Line 1"
+          },
+          "addressLine2": {
+            "type": "string",
+            "description": "Address Line 2"
+          },
+          "zipCode": {
+            "type": "string",
+            "description": "Zip Code"
+          },
+          "testbool":{
+            "type": "boolean",
+            "description": "Test bool"
+          }
+        },
+        "required": [
+          "updatedAt",
+          "country",
+          "state",
+          "city",
+          "addressLine1",
+          "zipCode"
+        ]
+      }
+     
+    },
+    {
+      "httpMethod": "DELETE",
+      "needSeparatedLambda": true,
+      "isCorsEnabled": true,
+      "authenticationInfo": {
+        "authenticated": true
+      },
+      "requestParameters": [
+        {
+          "location": "querystring",
+          "name": "updatedAt",
+          "required": true
+        }
+      ]
+     
+    },
+    {
+      "httpMethod": "GET",
+      "pathParameter": "key",
+      "needSeparatedLambda": true,
+      "isCorsEnabled": true,
+      "requestParameters": [
+        {
+          "location": "path",
+          "name": "key",
+          "required": true
+        },
+        {
+          "location": "querystring",
+          "name": "updatedAt",
+          "required": false
+        }
+      ],
+      "authenticationInfo": {
+        "authenticated": true
+      }
+      
+    }
+  ]
+}

@@ -1,0 +1,10 @@
+amplify
+*.test.*
+*.stories.*
+src/acp-exports.ts
+src/aws-exports.ts
+src/reportWebVitals.ts
+tsconfig.json
+tsconfig.paths.json
+src/stories/*
+src/components/*

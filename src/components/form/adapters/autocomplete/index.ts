@@ -1,0 +1,1 @@
+export { AutocompleteAdapter } from "./autocomplete"

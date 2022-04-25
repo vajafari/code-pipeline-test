@@ -1,0 +1,226 @@
+default:
+  image: node:14
+
+variables:
+  ENVIRONMENT: "dev"
+
+stages:
+  - backend:build
+  - backend:deploy
+  - frontend:build
+  - frontend:test
+  - frontend:deploy
+
+workflow:
+  rules:
+    - if: $CI_COMMIT_BRANCH && $CI_OPEN_MERGE_REQUESTS && $CI_PIPELINE_SOURCE == "push"
+      when: never
+    - if: $CI_COMMIT_REF_NAME == "staging"
+      variables:
+        ENVIRONMENT: "stg"
+    - if: $CI_COMMIT_REF_NAME == "master"
+      variables:
+        ENVIRONMENT: "prd"
+    - when: always
+
+cache:
+  key: "${CI_COMMIT_REF_SLUG}"
+  paths:
+    - serverless/aws-exports.ts
+
+.changes: &changes
+  - src/*
+  - src/**/*
+  - src/**/**/*
+  - package.json
+  - tsconfig.json
+  - tsconfig.paths.json
+  - webpack.config.js
+  - .gitlab-ci.yml
+
+.only-changes:
+  rules:
+    - changes: *changes
+      when: on_success
+    - when: never
+
+.changes-backend: &changes-backend
+  - serverless/*
+  - serverless/**/*
+  - serverless/**/**/*
+  - serverless/**/**/**/*
+  - .gitlab-ci.yml
+
+.only-changes-backend:
+  rules:
+    - changes: *changes-backend
+      when: on_success
+    - when: never
+
+# THIS JOB MUST BE REMOVED BECAUSE IT'S A WASTE OF CI TIME. IT ONLY EXISTS UNTIL GITLAB FIXES & RELEASES THIS BUG:
+# https://gitlab.com/gitlab-org/gitlab/-/issues/229738
+TEMP:build:
+  stage: backend:build
+  image: node:14-alpine
+  variables:
+    LAMBDA: "*"
+  rules:
+    - if: '$CI_COMMIT_REF_NAME == "develop" || $CI_COMMIT_REF_NAME == "staging" || $CI_COMMIT_REF_NAME == "master"'
+      when: never
+    - changes: *changes
+      when: never
+    - changes: *changes-backend
+      when: never
+    - when: always
+  script:
+    - echo "You haven't changed anything in the `Packages` folder, so this is a temporary job to only let you merge your MR"
+
+backend:build:
+  extends: .only-changes-backend
+  stage: backend:build
+  before_script:
+    - cd serverless
+    - npm ci
+  script:
+    - npm run build
+
+backend:deploy:
+  stage: backend:deploy
+  image: bardianav/nodelts_serverless_awscli
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
+      when: never
+    - if: '$CI_COMMIT_REF_NAME == "develop" || $CI_COMMIT_REF_NAME == "staging"'
+      changes: *changes-backend
+      when: on_success
+    - if: $CI_COMMIT_REF_NAME == "master"
+      changes: *changes-backend
+      when: manual
+    - when: never
+  needs:
+    - backend:build
+  artifacts:
+    untracked: false
+    expire_in: 1 days
+    paths:
+      - "serverless/aws-exports.ts"
+  before_script:
+    - cd serverless
+    - npm ci
+  script:
+    - serverless deploy --stage $ENVIRONMENT
+  after_script:
+    - cd scripts
+
+frontend:build:
+  stage: frontend:build
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
+      when: never
+    - if: '$CI_COMMIT_REF_NAME == "develop" || $CI_COMMIT_REF_NAME == "staging" || $CI_COMMIT_REF_NAME == "master"'
+      changes: *changes
+      when: on_success
+    - when: never
+  needs:
+    - job: backend:deploy
+      optional: true
+  artifacts:
+    untracked: false
+    expire_in: 1 days
+    paths:
+      - build/
+  before_script:
+    - yarn
+  script:
+    - cp serverless/aws-exports.ts src/aws-exports.ts
+    - yarn build
+  environment:
+    name: $ENVIRONMENT
+    action: prepare
+
+frontend:build:ts:
+  stage: frontend:build
+  rules:
+    - if: '$CI_COMMIT_REF_NAME == "develop" || $CI_COMMIT_REF_NAME == "staging" || $CI_COMMIT_REF_NAME == "master"'
+      when: never
+    - changes: *changes
+      when: on_success
+    - when: never
+  before_script:
+    - yarn
+  script:
+    - yarn build:ts
+
+frontend:test:jest:
+  extends: .only-changes
+  stage: frontend:test
+  coverage: /Lines\s*:\s*(\d+.?\d*)%/
+  needs:
+    - job: frontend:build
+      optional: true
+    - job: frontend:build:ts
+      optional: true
+  artifacts:
+    paths:
+      - coverage
+    when: always
+    reports:
+      junit:
+        - junit.xml
+  before_script:
+    - yarn
+  script:
+    - yarn test:ci
+
+frontend:test:lint:
+  extends: .only-changes
+  stage: frontend:test
+  needs:
+    - job: frontend:build
+      optional: true
+    - job: frontend:build:ts
+      optional: true
+  before_script:
+    - yarn
+  script:
+    - yarn lint:ci
+
+# frontend:test:storybook:
+#   extends: .only-changes
+#   stage: frontend:test
+#   needs:
+#     - job: frontend:build
+#       optional: true
+#     - job: frontend:build:ts
+#       optional: true
+#   script:
+#     - yarn build-storybook
+
+frontend:deploy:
+  stage: frontend:deploy
+  image: bardianav/nodelts_serverless_awscli
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
+      when: never
+    - if: '$CI_COMMIT_REF_NAME == "develop" || $CI_COMMIT_REF_NAME == "staging"'
+      changes: *changes
+      when: on_success
+    - if: $CI_COMMIT_REF_NAME == "master"
+      changes: *changes
+      when: manual
+    - when: never
+  needs:
+    - frontend:build
+    - frontend:test:jest
+    - frontend:test:lint
+    # - frontend:test:storybook
+  before_script:
+    - yarn
+  script:
+    - aws s3 cp ./build/ s3://code-pipeline-test-frontenddeploymentbu-1650871920579-$ENVIRONMENT --region "us-east-2" --recursive --exclude "./build/index.html"
+    - aws s3 cp --cache-control max-age=0 --region "us-east-2" ./build/index.html s3://code-pipeline-test-frontenddeploymentbu-1650871920579-$ENVIRONMENT
+    - cloudfrontdist=$(aws ssm get-parameter --name "code-pipeline-test-cloudfront-distributions-id-$ENVIRONMENT" --query Parameter.Value --region "us-east-2" --output text)
+    - echo $cloudfrontdist
+    - aws cloudfront create-invalidation --distribution-id $cloudfrontdist --paths "/index.html" --region "us-east-2"
+  environment:
+    name: $ENVIRONMENT

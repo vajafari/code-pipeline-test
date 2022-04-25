@@ -1,0 +1,15 @@
+{
+  "exclude": ["**/.git", "**/dist", "**/tmp", "**/*.test.*", "serverless"],
+  "include": ["./src/**/*", "./tests/**/*", "./types/*", "./node_modules/jest", "./craco.config.js", "./craco.config.dev.js"],
+  "compilerOptions": {
+    "baseUrl": ".",
+    "rootDir": ".",
+    "esModuleInterop": true,
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "types": ["jest", "webpack", "webpack-env", "node", "react"],
+    "paths": {
+      "acp/*": ["./*"]
+    }
+  }
+}
