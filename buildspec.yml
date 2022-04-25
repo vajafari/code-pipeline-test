@@ -1,0 +1,17 @@
+version: 0.2
+
+phases:
+  install:
+    commands:
+      - yarn
+  build:
+    commands:
+      - yarn build
+  post_build:
+    commands:
+      - echo build is `date`
+artifacts:
+  files:
+    - cloud-formtation.json
+    - build/*
+  name: build-artifacts
