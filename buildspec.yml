@@ -2,6 +2,8 @@ version: 0.2
 
 phases:
   install:
+    runtime-versions:
+      nodejs: latest
     commands:
       - echo $CODEBUILD_WEBHOOK_TRIGGER
       - npm install
