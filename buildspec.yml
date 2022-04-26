@@ -20,8 +20,8 @@ artifacts:
   name: build-output
   discard-paths: no
   secondary-artifacts:
-    cloudformationfile:
+    cloudformationfiles:
       files:
         - "cloud-formations/**/*"
-      name: cloudformationfiles
+      name: cloud-formation-files
       discard-paths: no
