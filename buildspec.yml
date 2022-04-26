@@ -16,14 +16,14 @@ phases:
       - echo build is completed
 artifacts:
   files:
-    - "build/*"
+    - "**/*"
   name: build-output
   discard-paths: no
   base-directory: build
   secondary-artifacts:
     cloudformationfiles:
       files:
-        - "cloud-formations/*"
+        - "**/*"
       name: cloud-formation-files-1
       discard-paths: no
       base-directory: cloud-formations
