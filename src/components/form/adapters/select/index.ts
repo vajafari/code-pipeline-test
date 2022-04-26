@@ -1,1 +1,0 @@
-export { SelectAdapter } from "./select"

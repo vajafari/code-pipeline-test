@@ -1,6 +1,0 @@
-export type { apiConfig } from "./requests/swr/_common"
-export { setSwrKey } from "./requests/swr/_common"
-export { mutate } from "swr"
-export type { responseInterface } from "swr"
-export { useSwr } from "./requests/swr/use-swr"
-export { useSwrInfinite } from "./requests/swr/use-swr-infinite"

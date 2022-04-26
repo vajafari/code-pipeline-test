@@ -9,19 +9,12 @@ phases:
       - yarn
   build:
     commands:
-      - yarn build
+      - npm build
   post_build:
     commands:
-      - echo build is `date`
+      - echo build is completed
 artifacts:
   files:
     - "build/**/*"
   name: build-output
   discard-paths: no
-  s3-prefix: $CODEBUILD_WEBHOOK_TRIGGER/build
-  secondary-artifacts:
-    cloudformationfile:
-      files:
-        - cloud-formtation.json
-      name: cloudformtation
-      discard-paths: no
