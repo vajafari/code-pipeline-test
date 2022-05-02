@@ -22,12 +22,12 @@ jobs:
       - run:
           name: echo source branch
           command: echo $TESTVAL
-
 workflows:
+  version: 2
   aws-cli:
     jobs:
       - source-branch-operations
-      - deploy-stack
+      - deploy-stack:
           requires:
             - source-branch-operations
       
