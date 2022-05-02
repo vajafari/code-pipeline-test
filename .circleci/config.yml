@@ -8,8 +8,12 @@ jobs:
       - checkout
       - aws-cli/setup:
           profile-name: default
-      - run: >-
+      - run:
+          name: print directory
+          command: ls
+      - run: 
           aws lambda list-functions
+
 workflows:
   aws-cli:
     jobs:
