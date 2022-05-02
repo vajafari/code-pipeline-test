@@ -8,7 +8,7 @@ jobs:
       - checkout
       - run:
           name: Detect source branch
-          command: git show-branch
+          command: git show-branch | grep '*' 
   deploy-stack:
     executor: aws-cli/default
     steps:
