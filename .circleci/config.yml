@@ -8,7 +8,7 @@ jobs:
       - checkout
       - run:
           name: Detect source branch
-          command: SOURCEBRANCH=$(git show-branch | grep '*' | grep -v "$(git rev-parse --abbrev-ref HEAD)" | head -n1 | sed 's/.*\[\(.*\)\].*/\1/' | sed 's/[\^~].*//')
+          command: git show-branch | grep '*' | grep -v "$(git rev-parse --abbrev-ref HEAD)" | head -n1 | sed 's/.*\[\(.*\)\].*/\1/' | sed 's/[\^~].*//'
       - run:
           name: Echo SOURCEBRANCH Variable 
           command: echo $SOURCEBRANCH
