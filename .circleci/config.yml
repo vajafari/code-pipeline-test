@@ -10,8 +10,8 @@ jobs:
           name: $CIRCLE_BRANCH
           command: echo $CIRCLE_BRANCH
       - run:
-          name: TESTVAT=$(TESTVARVALYE)
-          command: TESTVAT=$(TESTVARVALYE)
+          name: TESTVAT=$("TESTVARVALYE")
+          command: TESTVAT=$("TESTVARVALYE")
       - run:
           name: echo $TESTVAT
           command: echo $TESTVAT
