@@ -5,7 +5,6 @@ jobs:
   config-aws-cli:
     executor: aws-cli/default
     steps:
-      - checkout
       - aws-cli/setup:
           profile-name: default
       - run:
