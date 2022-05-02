@@ -10,11 +10,11 @@ jobs:
           name: $CIRCLE_BRANCH
           command: echo $CIRCLE_BRANCH
       - run:
-          name: TESTVAT=$("TESTVARVALYE")
-          command: TESTVAT=$("TESTVARVALYE")
+          name: TESTVAL=TESTVALUE
+          command: TESTVAL=TESTVALUE
       - run:
-          name: echo $TESTVAT
-          command: echo $TESTVAT
+          name: echo $TESTVAL
+          command: echo $TESTVAL
   deploy-stack:
     executor: aws-cli/default
     steps:
