@@ -5,11 +5,16 @@ jobs:
   config-aws-cli:
     executor: aws-cli/default
     steps:
+      - checkout
+      
       - aws-cli/setup:
           profile-name: default
       - run:
           name: print directory
           command: ls
+      - run:
+          name: print version of git
+          command: git --version
       - run: 
           aws lambda list-functions
 
