@@ -8,14 +8,9 @@ jobs:
       - checkout
       - aws-cli/setup:
           profile-name: default
-  run-sample-command:
-    executor: aws-cli/default
-
-    steps:
       - run: >-
           aws lambda list-functions
 workflows:
   aws-cli:
     jobs:
       - config-aws-cli
-      - run-sample-command
