@@ -1,14 +1,19 @@
 version: 2.1
 orbs:
   aws-cli: circleci/aws-cli@3.1
+  mem: circleci/rememborb@0.0.2
+
 jobs:
   source-branch-operations:
     executor: aws-cli/default
     steps:
       - checkout
       - run:
-          name: echo "export TESTVAL=TESTVALUE" >> $BASH_ENV 
-          command:  echo "export TESTVAL=TESTVALUE" >> $BASH_ENV 
+          name: TESTVAL=TESTVALUE
+          command:  TESTVAL=TESTVALUE
+      - mem/remember:
+          env_var: TESTVAL
+          value: $TESTVAL
       - run:
           name: echo $TESTVAL
           command: echo $TESTVAL
@@ -16,6 +21,8 @@ jobs:
     executor: aws-cli/default
     steps:
       - checkout
+      - mem/recall:
+          env_var: TESTVAL
       - run:
           name: echo $TESTVAL
           command: echo $TESTVAL
