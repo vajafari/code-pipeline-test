@@ -1,0 +1,22 @@
+version: 2.1
+orbs:
+  aws-cli: circleci/aws-cli@3.1
+jobs:
+  config-aws-cli:
+    executor: aws-cli/default
+    steps:
+      - checkout
+      - aws-cli/setup:
+          profile-name: default
+  run-sample-command:
+    executor: aws-cli/default
+    requires:
+      - config-aws-cli
+    steps:
+      - run: >-
+          aws lambda list-functions
+workflows:
+  aws-cli:
+    jobs:
+      - config-aws-cli
+      - run-sample-command
