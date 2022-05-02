@@ -7,10 +7,7 @@ jobs:
     steps:
       - checkout
       - run:
-          name: $CIRCLE_BRANCH
-          command: echo $CIRCLE_BRANCH
-      - run:
-          name: TESTVAL=TESTVALUE
+          name: echo "export TESTVAL=TESTVALUE" >> $BASH_ENV 
           command:  echo "export TESTVAL=TESTVALUE" >> $BASH_ENV 
       - run:
           name: echo $TESTVAL
@@ -20,7 +17,7 @@ jobs:
     steps:
       - checkout
       - run:
-          name: echo source branch
+          name: echo $TESTVAL
           command: echo $TESTVAL
 workflows:
   version: 2
