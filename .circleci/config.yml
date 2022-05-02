@@ -28,3 +28,6 @@ workflows:
     jobs:
       - source-branch-operations
       - deploy-stack
+          requires:
+            - source-branch-operations
+      
