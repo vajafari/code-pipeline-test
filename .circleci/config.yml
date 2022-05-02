@@ -10,8 +10,7 @@ jobs:
           profile-name: default
   run-sample-command:
     executor: aws-cli/default
-    requires:
-      - config-aws-cli
+
     steps:
       - run: >-
           aws lambda list-functions
