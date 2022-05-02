@@ -8,7 +8,7 @@ jobs:
       - checkout
       - run:
           name: Detect source branch
-          command: git show-branch | grep '*'
+          command: git show-branch | grep '*' || grep -v "$(git rev-parse --abbrev-ref HEAD)"
   deploy-stack:
     executor: aws-cli/default
     steps:
