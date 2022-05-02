@@ -21,7 +21,7 @@ jobs:
       - checkout
       - run:
           name: echo source branch
-          command: echo $SOURCEBRANCH
+          command: echo $TESTVAL
 
 workflows:
   aws-cli:
