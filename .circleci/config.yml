@@ -7,17 +7,11 @@ jobs:
     steps:
       - checkout
       - run:
-          name: echo source branch
+          name: $CIRCLE_BRANCH
           command: echo $CIRCLE_BRANCH
       - run:
-          name: echo source branch
-          command: git show-branch | grep -v "$(git rev-parse --abbrev-ref HEAD)" | head -n1 | sed 's/.*\[\(.*\)\].*/\1/' | sed 's/[\^~].*//'
-      - run:
-          name: set source branch
-          command: SOURCEBRANCH=$(git show-branch | grep -v "$(git rev-parse --abbrev-ref HEAD)" | head -n1 | sed 's/.*\[\(.*\)\].*/\1/' | sed 's/[\^~].*//')
-      - run:
-          name: echo source branch variable
-          command: echo $SOURCEBRANCH
+          name: echo $pipeline.git.branch
+          command: $pipeline.git.branch
   deploy-stack:
     executor: aws-cli/default
     steps:
