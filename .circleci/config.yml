@@ -1,0 +1,35 @@
+version: 2.1
+orbs:
+  aws-cli: circleci/aws-cli@3.1
+jobs:
+  do-operation-on-source:
+    executor: aws-cli/default
+    steps:
+      - checkout
+      - run:
+          name: echo source branch name
+          command: git show-branch | grep '*' | grep -v "$(git rev-parse --abbrev-ref HEAD)" | head -n1 | sed 's/.*\[\(.*\)\].*/\1/' | sed 's/[\^~].*//
+      - run:
+          name: print version of git
+          command: git --version
+      - run: 
+          aws lambda list-functions
+  config-aws-cli:
+    executor: aws-cli/default
+    steps:
+      - checkout
+      - aws-cli/setup:
+          profile-name: default
+      - run:
+          name: print directory
+          command: ls
+      - run:
+          name: print version of git
+          command: git --version
+      - run: 
+          aws lambda list-functions
+
+workflows:
+  copy-resources:
+    jobs:
+      - do-operation-on-source
