@@ -11,7 +11,7 @@ jobs:
           command: echo $CIRCLE_BRANCH
       - run:
           name: TESTVAL=TESTVALUE
-          command: TESTVAL=TESTVALUE
+          command:  echo "export TESTVAL=TESTVALUE" >> $BASH_ENV 
       - run:
           name: echo $TESTVAL
           command: echo $TESTVAL
