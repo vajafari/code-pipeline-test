@@ -7,7 +7,10 @@ jobs:
     steps:
       - checkout
       - run:
-          name: Detect source branch
+          name: echo source branch
+          command: git show-branch | grep -v "$(git rev-parse --abbrev-ref HEAD)" | head -n1 | sed 's/.*\[\(.*\)\].*/\1/' | sed 's/[\^~].*//'
+      - run:
+          name: set source branch
           command: SOURCEBRANCH=$(git show-branch | grep -v "$(git rev-parse --abbrev-ref HEAD)" | head -n1 | sed 's/.*\[\(.*\)\].*/\1/' | sed 's/[\^~].*//')
       - run:
           name: echo source branch variable
